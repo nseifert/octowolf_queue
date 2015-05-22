@@ -1,25 +1,104 @@
 __author__ = 'nate'
 import re
+import json
+import time
+
+import smtplib
+import email.MIMEMultipart
+import email.MIMEText
 
 class Email(object):
 
-    def decodeIt(self, input_json):
-        # This function should process a json output from Job and turn it into an e-mail string
-        pass
 
-    def checkAddressValidity(self, addr):
-        if not re.match("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", addr):
+
+    @staticmethod
+    def prettifyit(input_json):
+
+        json_dict = json.loads(input_json)
+
+        out = "%20s\t%s\r\n%20s\t%20s\r\n%20s\t%20s\r\n%20s\t%20s\r\n" \
+              "%20s\t%20s" %('Username:', json_dict['uname'], 'E-mail:', json_dict['email'],
+                             'Input File Name:', json_dict['inp_name'],
+                             'Output File Name:', json_dict['out_name'],
+                             'Time Started:', json_dict['initial_time'])
+        return out
+
+
+    def send(self, status='start'):
+
+        # --------------- Create message ------------------
+
+        msg = email.MIMEMultipart.MIMEMultipart()
+        current_time = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
+        msg['From'] = self.EMAIL_DAEMON_ADDR
+        msg['To'] = ','.join([self.dest])
+        msg['Subject'] = 'octowolf Gaussian Job Update'
+
+        if status == 'start':
+            msg['Subject'] += '-- init'
+
+        if status == 'end':
+            msg['Subject'] += '-- finish'
+
+        body = 'Hello! This is an automated message from the Octowolf mail daemon, sent at %s. \n\n' \
+                %current_time
+
+        if status == 'start':
+            body += 'This message is to inform you that your Gaussian 09 job has been initialized. Below is the' \
+                    ' relevant information regarding your job:\n\n'
+        if status == 'end':
+            body += 'This message is to inform you that your Gaussian 09 job has been completed. Below is the' \
+                    ' relevant information regarding your job:\n\n'
+
+        body += self.content
+
+
+
+        if status == 'end':
+            body += "\n%20s\t%20s\n" %('Time Ended:',current_time)
+
+        msg.attach(email.MIMEText.MIMEText(body))
+
+        # NEW FEATURE TO ADD HERE:
+        # Add attachment of Gaussian input/output file?!!?! Is possible! See:
+        # http://www.jayrambhia.com/blog/send-emails-using-python/
+
+        # ------------- Initialize SMTP server handshake ---------------
+
+        server = smtplib.SMTP()
+        server.connect('smtp.gmail.com', port=587)
+        server.ehlo()
+        server.starttls()
+        server.login(self.EMAIL_DAEMON_ADDR, self.EMAIL_DAEMON_PASS)
+
+        # ------------ Send e-mail -----------------------
+
+        server.sendmail(self.EMAIL_DAEMON_ADDR, [self.dest], msg.as_string())
+        server.quit()
+
+
+    @staticmethod
+    def checkaddressvalidity(addr):
+        if not re.match("(^[a-zA-Z0-9_.+-]+@[a-z A-Z0-9-]+\.[a-zA-Z0-9-.]+$)", addr):
             return False
         else:
             return True
 
-    def __init__(self, dest, job_json=None):
+    def __init__(self, dest, job_json=None, status='start'):
 
-        if self.checkAddressValidity(dest):
+        self.EMAIL_DAEMON_ADDR = 'octowolf.daemon@gmail.com'
+        self.EMAIL_DAEMON_PASS = 'secret'
+
+        if self.checkaddressvalidity(dest):
             self.dest = dest
-            print 'It worked!'
         else:
             self.dest = None
             raise ValueError('Not a valid e-mail address')
 
-        self.job_data = self.decodeIt(job_json)
+        self.content = self.prettifyit(job_json)
+
+        if status == 'start':
+            self.send()
+        if status == 'end':
+            self.send(status='end')
+

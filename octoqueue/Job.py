@@ -16,9 +16,9 @@ class Job(object):
     DEFAULT_OUT_PATH = '/data/GaussJobs/out'
 
     noun_list = ['Wolf', 'Johnson', 'Rabi', 'Peter', 'SteelBeams', 'Frog', 'Zombie', 'Insomniac', 'Jackrabbit',
-                 'Mario', 'Luigi','Cabbage','Sashimi','Dongle']
+                 'Mario', 'Luigi','Cabbage','Sashimi','Dongle','Pitbull','JustinBieber']
     adjec_list = ['Mad', 'Inquisitive', 'Big', 'Melted', 'Stylish', 'Scientific', 'Bored', 'Terrifying', 'Adiabatic',
-                  'Coherent', 'Incoherent', 'Stimulated', 'Perturbative', 'Classy']
+                  'Coherent', 'Incoherent', 'Stimulated', 'Perturbative', 'Classy','Symmetric','Quantum','Classical']
     gerund_list = ['Dancing', 'Sleeping', 'Laughing', 'Stinking', 'Loving', 'Running', 'Dying', 'Fermenting', 'Cooking',
                    'Calculating', 'Partying', 'Celebrating', 'Crying']
 
