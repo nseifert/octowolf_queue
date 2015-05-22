@@ -60,7 +60,7 @@ class Email(object):
 
         list_o_cows = "apt bud-frogs bunny calvin cheese cock cower daemon default dragon " \
             "dragon-and-cow duck elephant" \
-        "elephant-in-snake eyes flaming-sheep ghostbusters gnu " \
+            "elephant-in-snake eyes flaming-sheep ghostbusters gnu " \
             "head-in hellokitty kiss kitty koala kosh luke-koala mech-and-cow meow milk moofasa moose " \
             "mutilated pony pony-smaller ren sheep skeleton snowman stegosaurus stimpy suse " \
             "three-eyes turkey turtle tux unipony unipony-smaller vader vader-koala".split()
