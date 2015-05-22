@@ -7,6 +7,9 @@ import smtplib
 import email.MIMEMultipart
 import email.MIMEText
 
+from random import choice
+import subprocess
+
 class Email(object):
 
 
@@ -52,10 +55,21 @@ class Email(object):
 
         body += self.content
 
-
-
         if status == 'end':
             body += "\n%20s\t%20s\n" %('Time Ended:',current_time)
+
+        list_o_cows = "apt bud-frogs bunny calvin cheese cock cower daemon default dragon " \
+            "dragon-and-cow duck elephant" \
+        "elephant-in-snake eyes flaming-sheep ghostbusters gnu " \
+            "head-in hellokitty kiss kitty koala kosh luke-koala mech-and-cow meow milk moofasa moose " \
+            "mutilated pony pony-smaller ren sheep skeleton snowman stegosaurus stimpy suse " \
+            "three-eyes turkey turtle tux unipony unipony-smaller vader vader-koala".split()
+
+        cmd = 'cowsay -f %s \"Thanks for using Octowolf!\"' % choice(list_o_cows)
+        goodbye_cow = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]
+
+        body += '\n\n %s' % goodbye_cow
+
 
         msg.attach(email.MIMEText.MIMEText(body))
 
