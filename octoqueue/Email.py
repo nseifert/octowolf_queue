@@ -62,7 +62,7 @@ class Email(object):
             "dragon-and-cow duck elephant" \
             "elephant-in-snake eyes flaming-sheep ghostbusters gnu " \
             "head-in hellokitty kiss kitty koala kosh luke-koala mech-and-cow meow milk moofasa moose " \
-            "mutilated pony pony-smaller ren sheep skeleton snowman stegosaurus stimpy suse " \
+            "mutilated pony pony-smaller ren sheep skeleton snowman stegosaurus stlimpy suse " \
             "three-eyes turkey turtle tux unipony unipony-smaller vader vader-koala".split()
 
         cmd = 'cowsay -f %s \"Thanks for using Octowolf!\"' % choice(list_o_cows)

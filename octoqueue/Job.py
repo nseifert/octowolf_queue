@@ -12,8 +12,8 @@ class Job(object):
     # 4) Time & Date for input file submission
     # 5) E-mail address
 
-    DEFAULT_IN_PATH = '/data/GaussJobs/inp'
-    DEFAULT_OUT_PATH = '/data/GaussJobs/out'
+    DEFAULT_IN_PATH = '/data/GaussJobs/inp/'
+    DEFAULT_OUT_PATH = '/data/GaussJobs/out/'
 
     noun_list = ['Wolf', 'Johnson', 'Rabi', 'Peter', 'SteelBeams', 'Frog', 'Zombie', 'Insomniac', 'Jackrabbit',
                  'Mario', 'Luigi','Cabbage','Sashimi','Dongle','Pitbull','JustinBieber']
@@ -61,6 +61,7 @@ class Job(object):
             else self.DEFAULT_OUT_PATH
 
         self.initial_time = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
+        self.epoch_time = time.gmtime()
 
 if __name__ == "__main__":
     test = Job(uname='Nate')
