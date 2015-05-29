@@ -34,7 +34,7 @@ def isgaussianrunning():
 
 def generate_job(inp):
     # First convert to UNIX format
-    ps = subprocess.Popen('dos2unix %s' %(QUEUE_PATH+inp), shell=True,stdout=subprocess.PIPE)
+    ps = subprocess.Popen('dos2unix %s' %(QUEUE_PATH+inp), shell=True, stdout=subprocess.PIPE)
     ps.wait()
 
     inp_file = open(inp,'r')
@@ -48,32 +48,29 @@ def generate_job(inp):
 
     return Job(uname=info[0], inp_name=inp, out_name=inp.split('.')[0]+".out", email=info[1])
 
-def get_new_jobs(current_queue):
+def get_new_jobs(queue):
 
     dir_list = sorted(listdir(QUEUE_PATH), key=lambda x: getmtime(join(QUEUE_PATH, x)))
-    new_queue = deque()
 
     if not dir_list:
         pass  # No files waiting to be run
 
     else:  # Now check each file in QUEUE_PATH to see if it's in the queue
 
-        if current_queue:  # There's stuff in the queue to check
+        if queue:  # There's stuff in the queue to check
 
             for inp_file in dir_list:
-                if inp_file in [f.inp_name for f in current_queue]:
+                if inp_file in [f.inp_name for f in queue]:
+                    print inp_file
                     continue
                 else:
-                    new_queue.append(generate_job(inp_file))
-
-            new_queue = current_queue.extend(new_queue)
+                    queue.append(generate_job(inp_file))
 
         else:  # Nothing in the queue, but stuff to add
-
             for inp_file in dir_list:
-                new_queue.append(generate_job(inp_file))
+                queue.append(generate_job(inp_file))
 
-    return new_queue
+    return queue
 
 
 def main():
@@ -104,7 +101,7 @@ def main():
         current_queue = get_new_jobs(deque())
 
     if not current_queue:
-        sys.exit() # Nothing to do
+        sys.exit()  # Nothing to do
 
     else:  # Let's start the next process!
         cur_job = current_queue.popleft()

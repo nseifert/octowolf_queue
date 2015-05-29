@@ -34,7 +34,7 @@ class Job(object):
         "E-mail:         %s \n" \
         "Input File:     %s \n" \
         "Output File:    %s \n" \
-        "Time Started:   %s \n" %(self.uname,self.email,self.inp_name,self.out_name,self.initial_time)
+        "Time Started:   %s \n" %(self.uname,self.email,self.inp_name,self.out_name, self.epoch_time)
 
     def to_json(self):
         return json.dumps(self.__dict__)
@@ -60,13 +60,4 @@ class Job(object):
         self.out_path = out_path if out_path is not None and isinstance(out_path,basestring)\
             else self.DEFAULT_OUT_PATH
 
-        self.initial_time = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
-        self.epoch_time = time.gmtime()
-
-if __name__ == "__main__":
-    test = Job(uname='Nate')
-
-    print test
-
-    j = json.loads(test.to_json())
-    u = Job(**j)
+        self.epoch_time = str(time.strftime('%l:%M%p %Z on %b %d, %Y'))

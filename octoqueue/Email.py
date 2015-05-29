@@ -23,7 +23,7 @@ class Email(object):
               "%20s\t%20s" %('Username:', json_dict['uname'], 'E-mail:', json_dict['email'],
                              'Input File Name:', json_dict['inp_name'],
                              'Output File Name:', json_dict['out_name'],
-                             'Time Started:', json_dict['initial_time'])
+                             'Time Started:', json_dict['epoch_time'])
         return out
 
 
@@ -32,7 +32,7 @@ class Email(object):
         # --------------- Create message ------------------
 
         msg = email.MIMEMultipart.MIMEMultipart()
-        current_time = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
+        current_time = str(time.strftime('%l:%M%p %Z on %b %d, %Y'))
         msg['From'] = self.EMAIL_DAEMON_ADDR
         msg['To'] = ','.join([self.dest])
         msg['Subject'] = 'octowolf Gaussian Job Update'
@@ -101,7 +101,7 @@ class Email(object):
     def __init__(self, dest, job_json=None, status='start'):
 
         self.EMAIL_DAEMON_ADDR = 'octowolf.daemon@gmail.com'
-        self.EMAIL_DAEMON_PASS = 'secret'
+        self.EMAIL_DAEMON_PASS = 'octowolf1234'
 
         if self.checkaddressvalidity(dest):
             self.dest = dest
