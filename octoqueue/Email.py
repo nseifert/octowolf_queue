@@ -101,7 +101,7 @@ class Email(object):
     def __init__(self, dest, job_json=None, status='start'):
 
         self.EMAIL_DAEMON_ADDR = 'octowolf.daemon@gmail.com'
-        self.EMAIL_DAEMON_PASS = 'octowolf1234'
+        self.EMAIL_DAEMON_PASS = 'secret'
 
         if self.checkaddressvalidity(dest):
             self.dest = dest
